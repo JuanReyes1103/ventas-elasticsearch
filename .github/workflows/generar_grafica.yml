@@ -43,11 +43,19 @@ jobs:
         echo "Esperando a que Elasticsearch esté listo..."
         until curl -s http://localhost:9200 >/dev/null; do sleep 5; done
 
-    - name: Ejecutar script
-      run: python mi_script.py
+    - name: Ejecutar script y mover gráfica a docs
+      run: |
+        python mi_script.py
+        mkdir -p docs
+        mv grafica.png docs/grafica.png
 
-    - name: Subir gráfica como artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: grafica
-        path: grafica.png
+    - name: Configurar Git para Pages
+      run: |
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+
+    - name: Commit y push de la gráfica a main/docs
+      run: |
+        git add docs/grafica.png
+        git commit -m "Actualizar gráfica"
+        git push origin main
