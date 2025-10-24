@@ -28,7 +28,7 @@ jobs:
       run: python mi_script.py
 
     - name: Subir gráfica como artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: grafica
         path: grafica.png
